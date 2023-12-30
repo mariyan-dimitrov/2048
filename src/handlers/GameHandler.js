@@ -1,42 +1,32 @@
 import { useEffect } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import generateRandomTile from '../utils/generateRandomTile';
-import { setStoreMe, useStoreMe } from 'store-me';
-const size = 4;
+import { getStoreMe, setStoreMe, useStoreMe } from 'store-me';
 
 const Gamehandler = () => {
-  const { tiles } = useStoreMe('tiles');
+  const { tiles, addNewTile } = useStoreMe('tiles', 'addNewTile');
 
-  useEffect(function startGame() {
-    const generateStartingTiles = () => {
-      // if (tiles.length < 2) {
-      //   const newTile = generateRandomTile();
-      //   const hasTileWithSameCoordinates = tiles.find(tile => tile.x === newTile.x && tile.y === newTile.y);
+  useEffect(
+    function startGame() {
+      const generateStartingTiles = () => {
+        if (tiles.length < 2 || addNewTile) {
+          const { tiles } = getStoreMe('tiles');
 
-      //   if (hasTileWithSameCoordinates) {
-      //     generateStartingTiles();
-      //   } else {
-      //     setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile] }));
-      //   }
-      // }
+          const newTile = generateRandomTile();
+          const hasTileWithSameCoordinates = tiles.find(tile => tile.x === newTile.x && tile.y === newTile.y);
 
-      setStoreMe({
-        tiles: [...Array(size)]
-          .map((_, x) =>
-            [...Array(size)].map((_, y) => ({
-              x,
-              y,
-              value: 2,
-              id: uuidv4(),
-            }))
-          )
-          .flat(),
-      });
-    };
+          if (hasTileWithSameCoordinates) {
+            generateStartingTiles();
+          } else {
+            setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile], addNewTile: false }));
+          }
+        }
+      };
 
-    generateStartingTiles();
-  }, []);
+      generateStartingTiles();
+    },
+    [tiles.length, addNewTile]
+  );
 };
 
 export default Gamehandler;

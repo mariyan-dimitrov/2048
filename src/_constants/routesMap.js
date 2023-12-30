@@ -1,11 +1,11 @@
-import Dashboard from '../components/pages/Dashboard';
+import HomePage from '../components/pages/HomePage';
 import cloneDeep from '../utils/cloneDeep';
 
 const routesStructure = {
-  dashboard: {
+  homepage: {
     path: '/',
-    title: 'Dashboard',
-    element: <Dashboard />,
+    title: 'HomePage',
+    element: <HomePage />,
   },
 };
 

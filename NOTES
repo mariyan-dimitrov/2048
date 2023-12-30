@@ -1,0 +1,5 @@
+[] Add a tile after all tiles are merged
+[] Keep a score and a highscore
+[] Keep the session in the localStorage
+[] Add support for bigger numbers
+[] Add an easter egg to manipulate the game

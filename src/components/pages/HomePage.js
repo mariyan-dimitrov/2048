@@ -4,25 +4,30 @@ import ControlHandler from '../../handlers/ControlHandler';
 import GameHandler from '../../handlers/GameHandler';
 import { useStoreMe } from 'store-me';
 
-const Dashboard = () => {
+const HomePage = () => {
   const { tiles } = useStoreMe('tiles');
 
   return (
-    <div>
-      <Wrap>
+    <Wrap>
+      <InnerWrap>
         <ControlHandler />
         <GameHandler />
         <Grid />
-      </Wrap>
+      </InnerWrap>
 
       <pre>{JSON.stringify(tiles, null, 2)}</pre>
-    </div>
+    </Wrap>
   );
 };
 
-export default Dashboard;
+export default HomePage;
 
 const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const InnerWrap = styled.div`
   width: 100%;
   height: 100%;
   display: flex;

@@ -4,6 +4,7 @@ import { StyleSheetManager } from 'styled-components';
 import getStylisPlugins from './utils/getStylisPlugins';
 import ErrorBoundary from './components/general/ErrorBoundary';
 import ThemeContextProvider from './components/contexts/ThemeContext';
+import GlobalCSS from './css/GlobalCSS';
 
 const App = () => {
   const route = useRoutes(routerRoutes);
@@ -11,6 +12,7 @@ const App = () => {
   return (
     <ThemeContextProvider>
       <StyleSheetManager stylisPlugins={getStylisPlugins()}>
+        <GlobalCSS />
         <ErrorBoundary placeContext="App">{route}</ErrorBoundary>
       </StyleSheetManager>
     </ThemeContextProvider>

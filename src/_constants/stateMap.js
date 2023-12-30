@@ -7,6 +7,7 @@ export const syncKeys = new Set([]);
 const appState = {
   themeMode: 'light',
   tiles: [],
+  addNewTile: false,
 };
 
 const functions = {

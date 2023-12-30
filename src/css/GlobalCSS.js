@@ -1,7 +1,4 @@
-/* stylelint-disable declaration-block-single-line-max-declarations, length-zero-no-unit */
 import { createGlobalStyle, css } from 'styled-components';
-
-import globalKeyFrames from './globalKeyFrames';
 
 export const globalStyles = css`
   * {
@@ -9,9 +6,6 @@ export const globalStyles = css`
   }
 
   html {
-    color: ${({ theme }) => theme.text_primary};
-    background-color: ${({ theme }) => theme.surface_1};
-
     &.modal-blur {
       #root {
         filter: blur(7px);
@@ -23,6 +17,7 @@ export const globalStyles = css`
   body,
   #root {
     height: 100%;
+    margin: 0;
   }
 
   #root {
@@ -34,7 +29,6 @@ export const globalStyles = css`
 
   html,
   html * {
-    scrollbar-color: ${({ theme }) => theme.native_scrollbar} rgb(255 255 255 / 0%);
     -webkit-tap-highlight-color: rgb(0 0 0 / 0%);
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
@@ -51,15 +45,11 @@ export const globalStyles = css`
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: ${({ theme }) => theme.native_scrollbar};
       border-radius: 3px;
     }
   }
 
   .thin-accent-scrollbar {
-    scrollbar-color: ${({ theme }) => theme.accent_1} rgb(255 255 255 / 0%);
-    -webkit-tap-highlight-color: ${({ theme }) => theme.accent_2};
-
     &::-webkit-scrollbar {
       width: 4px;
       height: 4px;
@@ -67,12 +57,10 @@ export const globalStyles = css`
     }
 
     &::-webkit-scrollbar-track {
-      background-color: ${({ theme }) => theme.accent_2};
       border-radius: 3px;
     }
 
     &::-webkit-scrollbar-thumb {
-      background-color: ${({ theme }) => theme.accent_1};
       border-radius: 3px;
     }
   }
@@ -140,7 +128,7 @@ export const globalStyles = css`
   }
 `;
 
-const GlobalStyle = createGlobalStyle`${globalStyles}${globalKeyFrames}`;
+const GlobalStyle = createGlobalStyle`${globalStyles}`;
 
 const GlobalCSS = props => <GlobalStyle {...props} />;
 

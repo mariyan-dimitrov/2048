@@ -19,6 +19,8 @@ const handleAction = (direction, axis) => {
       {}
     );
 
+    let hasMovedATile = false;
+
     for (let groupIndex = 0; groupIndex < size; groupIndex++) {
       const tilesInGroup = getTilesFromGroup(newTiles, groupIndex, axis, direction);
 
@@ -60,12 +62,15 @@ const handleAction = (direction, axis) => {
           }
         }
 
+        hasMovedATile =
+          hasMovedATile || tileToMove.x !== newTiles[tileToMove.id].x || tileToMove.y !== newTiles[tileToMove.id].y;
+
         newTiles[tileToMove.id] = tileToMove;
         // }
       }
     }
 
-    return { tiles: Object.values(newTiles) };
+    return { tiles: Object.values(newTiles), addNewTile: hasMovedATile };
   });
 };
 
