@@ -68,7 +68,7 @@ const Wrap = styled.div`
   background-color: ${({ theme }) => theme.grid_background};
 
   &.is-dynamic {
-    transition: transform 0.1s ease-out;
+    transition: transform 1s ease-out;
     position: absolute;
     top: 0;
     left: 0;
@@ -98,7 +98,7 @@ const InnerWrap = styled.div`
   }
 
   &.should-pulsate {
-    animation: pulsate 0.1s ease-out;
+    animation: pulsate 1s ease-out;
   }
 
   @keyframes pulsate {

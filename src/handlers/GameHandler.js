@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import generateRandomTile from '../utils/generateRandomTile';
 import { setStoreMe, useStoreMe } from 'store-me';
+const size = 4;
 
 const Gamehandler = () => {
   const { tiles } = useStoreMe('tiles');
@@ -21,17 +22,16 @@ const Gamehandler = () => {
       // }
 
       setStoreMe({
-        tiles: [
-          { x: 0, y: 2, value: 2, id: uuidv4() },
-
-          { x: 1, y: 2, value: 2, id: uuidv4() },
-          { x: 2, y: 2, value: 2, id: uuidv4() },
-          { x: 3, y: 2, value: 2, id: uuidv4() },
-
-          { x: 1, y: 1, value: 2, id: uuidv4() },
-          { x: 2, y: 1, value: 2, id: uuidv4() },
-          { x: 3, y: 1, value: 2, id: uuidv4() },
-        ],
+        tiles: [...Array(size)]
+          .map((_, x) =>
+            [...Array(size)].map((_, y) => ({
+              x,
+              y,
+              value: 2,
+              id: uuidv4(),
+            }))
+          )
+          .flat(),
       });
     };
 
