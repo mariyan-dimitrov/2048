@@ -1,5 +1,4 @@
 import local_storage from '../utils/local_storage';
-import log from '../utils/log';
 
 export const persistenceKeys = new Set([]);
 
@@ -32,7 +31,7 @@ export const generateInitialState = () => {
     persistenceKeys.forEach(key => !stateMap.hasOwnProperty(key) && notExistingStateKeys.push(key));
 
     notExistingStateKeys.length &&
-      log.error(`State keys for persistence were not found in state object: ${notExistingStateKeys.join(', ')}`);
+      console.error(`State keys for persistence were not found in state object: ${notExistingStateKeys.join(', ')}`);
   }
 
   return stateMap;

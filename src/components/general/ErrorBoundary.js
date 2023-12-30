@@ -3,7 +3,6 @@ import { useStoreMe } from 'store-me';
 
 import getSearchQueryFromObject from '../../utils/getSearchQueryFromObject';
 import getObjFromSearchQuery from '../../utils/getObjFromSearchQuery';
-import log from '../../utils/log';
 
 const ErrorBoundary = ({ children, renderError, onDidCatch, placeContext = 'Unknown', hideErrorComponent }) => {
   const { pathname } = useStoreMe('pathname');
@@ -63,8 +62,6 @@ class ErrorBoundaryClass extends Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    log.error('[error-boundary] - ', error, errorInfo);
-
     this.setState({
       errorInfo: errorInfo,
       hasError: true,
