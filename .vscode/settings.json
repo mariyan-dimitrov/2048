@@ -1,0 +1,49 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cSpell.words": [
+    "apys",
+    "AVAX",
+    "browserslist",
+    "chartjs",
+    "checkmark",
+    "checksummed",
+    "Criterias",
+    "defi",
+    "DEFIW",
+    "Docgen",
+    "dropdowns",
+    "fontawesome",
+    "fortawesome",
+    "hexlify",
+    "ipfs",
+    "liga",
+    "Menulink",
+    "Neue",
+    "nexoblockchain",
+    "noopener",
+    "noreferrer",
+    "NTFS",
+    "qrcode",
+    "stylelint",
+    "stylis",
+    "Swipeable",
+    "testid",
+    "toastify",
+    "ttnorms",
+    "uuidv",
+    "viewports",
+    "Vitalik",
+    "walletconnect",
+    "webfont"
+  ],
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "editor.stickyScroll.enabled": true
+}

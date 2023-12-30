@@ -1,0 +1,27 @@
+{
+  "processors": ["stylelint-processor-styled-components"],
+  "extends": [
+    "stylelint-config-recommended",
+    "stylelint-config-styled-components",
+    "stylelint-config-standard-scss",
+    "stylelint-config-prettier-scss"
+  ],
+  "overrides": [
+    {
+      "files": ["./src/**/*.js"],
+      "customSyntax": "postcss-scss"
+    }
+  ],
+  "rules": {
+    "declaration-no-important": true,
+    "font-weight-notation": "numeric",
+    "no-descending-specificity": null,
+    "selector-not-notation": null,
+    "no-empty-source": null,
+    "font-family-name-quotes": null,
+    "selector-pseudo-element-colon-notation": null,
+    "shorthand-property-no-redundant-values": null,
+    "declaration-block-no-redundant-longhand-properties": null,
+    "value-keyword-case": ["lower", { "ignoreKeywords": ["dummyValue"] }]
+  }
+}

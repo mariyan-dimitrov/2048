@@ -1,0 +1,25 @@
+{
+  "recommendations": [
+    "steoates.autoimport",
+    "mgmcdermott.vscode-language-babel",
+    "EditorConfig.EditorConfig",
+    "IronGeek.vscode-env",
+    "dbaeumer.vscode-eslint",
+    "file-icons.file-icons",
+    "eamodio.gitlens",
+    "ecmel.vscode-html-css",
+    "whtouche.vscode-js-console-utils",
+    "esbenp.prettier-vscode",
+    "OfHumanBondage.react-proptypes-intellisense",
+    "mde.select-highlight-minimap",
+    "stylelint.vscode-stylelint",
+    "cssho.vscode-svgviewer",
+    "wayou.vscode-todo-highlight",
+    "jaspernorth.vscode-pigments",
+    "styled-components.vscode-styled-components",
+    "formulahendry.auto-rename-tag",
+    "streetsidesoftware.code-spell-checker",
+    "wix.vscode-import-cost",
+    "meganrogge.template-string-converter"
+  ]
+}

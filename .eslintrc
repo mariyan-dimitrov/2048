@@ -1,0 +1,106 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jest": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:jsx-a11y/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:jest/recommended",
+    "plugin:testing-library/react",
+    "plugin:styled-components-a11y/recommended",
+    "plugin:promise/recommended"
+  ],
+  "plugins": ["styled-components-a11y", "import"],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "rules": {
+    "no-eval": "off",
+    "no-var": "error",
+    "curly": "error",
+    "no-console": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn",
+    "no-await-in-loop": "error",
+    "prefer-promise-reject-errors": "error",
+    "no-prototype-builtins": "off",
+    "no-duplicate-imports": "error",
+    "no-template-curly-in-string": "error",
+    "react/no-unknown-property": 1,
+    "react/react-in-jsx-scope": "off",
+    "dot-notation": "error",
+    "no-nested-ternary": "error",
+    "spaced-comment": ["warn", "always"],
+    "no-param-reassign": ["error"],
+    "promise/always-return": "off",
+    "promise/no-nesting": "off",
+    "promise/no-promise-in-callback": "off",
+    "capitalized-comments": [
+      "warn",
+      "always",
+      {
+        "ignorePattern": "eslint|stylelint|prettier",
+        "ignoreInlineComments": true
+      }
+    ],
+    "react/prop-types": [
+      1,
+      {
+        "skipUndeclared": true
+      }
+    ],
+    "padding-line-between-statements": [
+      "warn",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "if", "next": "*" },
+      { "blankLine": "always", "prev": ["const", "let", "var"], "next": "*" },
+      { "blankLine": "any", "prev": ["const", "let", "var"], "next": ["const", "let", "var"] }
+    ],
+    "react/forbid-prop-types": [1, { "forbid": ["any"], "checkContextTypes": true, "checkChildContextTypes": true }],
+    "react/no-unused-prop-types": 1,
+    "react/self-closing-comp": 1,
+    "react/jsx-boolean-value": 1,
+    "react/boolean-prop-naming": ["warn", { "rule": "^(is|has|are|should)[A-Z]([A-Za-z0-9]?)+" }],
+    "react/jsx-curly-brace-presence": [1, { "props": "never", "children": "never" }],
+    "no-implicit-coercion": "warn",
+    "no-mixed-operators": "warn",
+    "indent": [
+      1,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "brace-style": [
+      "error",
+      "1tbs",
+      {
+        "allowSingleLine": false
+      }
+    ],
+    "space-before-blocks": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "styled-components-a11y/no-static-element-interactions": "off",
+    "styled-components-a11y/click-events-have-key-events": "off"
+  }
+}
