@@ -1,23 +1,20 @@
 import local_storage from '../utils/local_storage';
 import log from '../utils/log';
 
-/* Add to "persistenceKeys" any state key that you want to be persisted in the local storage. */
 export const persistenceKeys = new Set([]);
 
-/* Add to "syncKeys" any state key that you want to be update real time across opened tabs and windows. */
 export const syncKeys = new Set([]);
 
-/* START state declarations */
-
-const appState = {};
+const appState = {
+  themeMode: 'light',
+  tiles: [],
+};
 
 const functions = {
   i18n: text => text,
 };
 
-/* END state declarations */
-
-export const generateInitialState = routes => {
+export const generateInitialState = () => {
   const stateMap = {
     ...appState,
     ...functions,
