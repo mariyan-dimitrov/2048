@@ -7,8 +7,9 @@ export const syncKeys = new Set([]);
 const appState = {
   themeMode: 'light',
   tiles: [],
+  gameOver: false,
   shouldAddNewTile: false,
-  areControlsLocked: false,
+  hasActionEnded: true,
   numberOfTilesThatWillMove: 0,
   numberOfTilesMoved: 0,
 };

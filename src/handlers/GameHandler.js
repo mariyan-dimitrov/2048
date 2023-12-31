@@ -2,14 +2,18 @@ import { getStoreMe, setStoreMe, useStoreMe } from 'store-me';
 import { useEffect } from 'react';
 
 import generateRandomTile from '../utils/generateRandomTile';
+import CONFIG from '../_constants/config';
 
 const Gamehandler = () => {
-  const { numberOfTilesThatWillMove, numberOfTilesMoved, shouldAddNewTile, tiles } = useStoreMe(
-    'numberOfTilesThatWillMove',
-    'numberOfTilesMoved',
-    'shouldAddNewTile',
-    'tiles'
-  );
+  const { numberOfTilesThatWillMove, numberOfTilesMoved, shouldAddNewTile, hasActionEnded, gameOver, tiles } =
+    useStoreMe(
+      'numberOfTilesThatWillMove',
+      'numberOfTilesMoved',
+      'shouldAddNewTile',
+      'hasActionEnded',
+      'gameOver',
+      'tiles'
+    );
 
   useEffect(
     function startGame() {
@@ -23,7 +27,7 @@ const Gamehandler = () => {
           if (hasTileWithSameCoordinates) {
             generateStartingTiles();
           } else {
-            setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile], shouldAddNewTile: false }));
+            setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile], shouldAddNewTile: false, hasActionEnded: true }));
           }
         }
       };
@@ -38,14 +42,64 @@ const Gamehandler = () => {
       numberOfTilesThatWillMove &&
         numberOfTilesMoved === numberOfTilesThatWillMove &&
         setStoreMe({
-          shouldAddNewTile: true,
           numberOfTilesThatWillMove: 0,
           numberOfTilesMoved: 0,
-          areControlsLocked: false,
+          shouldAddNewTile: true,
         });
     },
     [numberOfTilesThatWillMove, numberOfTilesMoved]
   );
+
+  useEffect(
+    function detectEndOfGame() {
+      if (tiles.length === CONFIG.gridSize ** 2 && hasActionEnded) {
+        const allTilesObject = {};
+        let doesHaveActionsLeft = false;
+
+        for (let index = 0; index < tiles.length; index++) {
+          const { x, y, value } = tiles[index];
+
+          allTilesObject[`${x}-${y}`] = value;
+        }
+
+        const matrix = [];
+
+        for (let x = 0; x < CONFIG.gridSize; x++) {
+          matrix[x] = [];
+
+          for (let y = 0; y < CONFIG.gridSize; y++) {
+            matrix[x][y] = allTilesObject[`${y}-${x}`];
+          }
+        }
+
+        for (let x = 0; x < CONFIG.gridSize; x++) {
+          for (let y = 0; y < CONFIG.gridSize; y++) {
+            const currentValue = allTilesObject[`${x}-${y}`];
+            const nextValueInRow = allTilesObject[`${x + 1}-${y}`];
+
+            if (currentValue === nextValueInRow) {
+              doesHaveActionsLeft = true;
+            } else {
+              const nextValueInColumn = allTilesObject[`${x}-${y + 1}`];
+
+              if (currentValue === nextValueInColumn) {
+                doesHaveActionsLeft = true;
+              }
+            }
+          }
+        }
+
+        setStoreMe({ gameOver: !doesHaveActionsLeft });
+      }
+    },
+    [tiles, hasActionEnded]
+  );
+
+  useEffect(() => {
+    if (gameOver) {
+      window.alert('Game ended');
+    }
+  }, [gameOver]);
 };
 
 export default Gamehandler;

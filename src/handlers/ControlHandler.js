@@ -76,15 +76,15 @@ const handleAction = (direction, axis) => {
     return {
       tiles: Object.values(newTiles),
       numberOfTilesThatWillMove,
-      areControlsLocked: numberOfTilesThatWillMove > 0,
+      hasActionEnded: numberOfTilesThatWillMove === 0,
     };
   });
 };
 
 const ControlHandler = () => {
-  const { areControlsLocked } = useStoreMe('areControlsLocked');
+  const { hasActionEnded } = useStoreMe('hasActionEnded');
 
-  useEventListener('keydown', ({ code }) => !areControlsLocked && actionsMap[code] && actionsMap[code]());
+  useEventListener('keydown', ({ code }) => hasActionEnded && actionsMap[code] && actionsMap[code]());
 };
 
 export default ControlHandler;

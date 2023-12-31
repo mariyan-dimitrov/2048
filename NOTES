@@ -1,10 +1,10 @@
 [X] Add a tile after all tiles are merged
 [X] When tiles are moving, disable the input
 [X] Add popup animation
+[X] Detect end of game
 [] Keep a score and a highscore
 [] Keep the session in the localStorage
 [] Add support for bigger numbers
 [] Add an easter egg to manipulate the game
 [] Optimize to run on old devices
 [] Support a mobile device
-[] Detect end of game
