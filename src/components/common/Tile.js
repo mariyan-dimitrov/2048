@@ -1,7 +1,7 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { setStoreMe } from 'store-me';
 import styled from 'styled-components';
 import cn from 'classnames';
-import { setStoreMe } from 'store-me';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
   const [pulsate, setPulsate] = useState(false);
@@ -9,7 +9,7 @@ const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
 
   const handleMerge = useCallback(
     () =>
-      setStoreMe(({ tiles }) => {
+      setStoreMe(({ tiles, numberOfTilesMerged }) => {
         const newTiles = tiles.map(tile => ({ ...tile })).filter(tile => tile.id !== id);
 
         for (let index = 0; index < newTiles.length; index++) {
@@ -21,24 +21,37 @@ const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
           }
         }
 
-        return { tiles: newTiles };
+        return { tiles: newTiles, numberOfTilesMerged: numberOfTilesMerged + 1 };
       }),
     [goingToMergeIntoId, id]
   );
 
-  useEffect(() => {
-    if (isInitialRender.current) {
-      isInitialRender.current = false;
-    } else {
-      setPulsate(true);
-    }
-  }, [value]);
+  const handleTileMovement = useCallback(
+    () => setStoreMe(({ numberOfTilesMoved }) => ({ numberOfTilesMoved: numberOfTilesMoved + 1 })),
+    []
+  );
+
+  useEffect(
+    function indicateMerge() {
+      if (isInitialRender.current) {
+        isInitialRender.current = false;
+      } else {
+        setPulsate(true);
+      }
+    },
+    [value]
+  );
 
   return (
     <Wrap
       x={x}
       y={y}
-      onTransitionEnd={e => e.target === e.currentTarget && goingToMergeIntoId && handleMerge()}
+      onTransitionEnd={e => {
+        if (e.target === e.currentTarget) {
+          handleTileMovement();
+          goingToMergeIntoId && handleMerge();
+        }
+      }}
       className={cn({
         'is-dynamic': value,
         'tile-being-merged': idBeingMerged,
@@ -68,7 +81,7 @@ const Wrap = styled.div`
   background-color: ${({ theme }) => theme.grid_background};
 
   &.is-dynamic {
-    transition: transform 1s ease-out;
+    transition: transform 0.1s ease-out;
     position: absolute;
     top: 0;
     left: 0;
@@ -95,10 +108,11 @@ const InnerWrap = styled.div`
     font-weight: 900;
     color: ${({ value, theme }) => theme[`box_color_${value}`]};
     background: ${({ value, theme }) => theme[`box_bg_${value}`]};
+    animation: pulsate 0.1s ease-out;
   }
 
   &.should-pulsate {
-    animation: pulsate 1s ease-out;
+    animation: pulsate 0.1s ease-out;
   }
 
   @keyframes pulsate {

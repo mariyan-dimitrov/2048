@@ -1,8 +1,9 @@
 import styled from 'styled-components';
-import Grid from '../common/Grid';
+import { useStoreMe } from 'store-me';
+
 import ControlHandler from '../../handlers/ControlHandler';
 import GameHandler from '../../handlers/GameHandler';
-import { useStoreMe } from 'store-me';
+import Grid from '../common/Grid';
 
 const HomePage = () => {
   const { tiles } = useStoreMe('tiles');

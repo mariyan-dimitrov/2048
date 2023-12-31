@@ -1,15 +1,20 @@
+import { getStoreMe, setStoreMe, useStoreMe } from 'store-me';
 import { useEffect } from 'react';
 
 import generateRandomTile from '../utils/generateRandomTile';
-import { getStoreMe, setStoreMe, useStoreMe } from 'store-me';
 
 const Gamehandler = () => {
-  const { tiles, addNewTile } = useStoreMe('tiles', 'addNewTile');
+  const { numberOfTilesThatWillMove, numberOfTilesMoved, shouldAddNewTile, tiles } = useStoreMe(
+    'numberOfTilesThatWillMove',
+    'numberOfTilesMoved',
+    'shouldAddNewTile',
+    'tiles'
+  );
 
   useEffect(
     function startGame() {
       const generateStartingTiles = () => {
-        if (tiles.length < 2 || addNewTile) {
+        if (tiles.length < 2 || shouldAddNewTile) {
           const { tiles } = getStoreMe('tiles');
 
           const newTile = generateRandomTile();
@@ -18,14 +23,28 @@ const Gamehandler = () => {
           if (hasTileWithSameCoordinates) {
             generateStartingTiles();
           } else {
-            setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile], addNewTile: false }));
+            setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile], shouldAddNewTile: false }));
           }
         }
       };
 
       generateStartingTiles();
     },
-    [tiles.length, addNewTile]
+    [tiles.length, shouldAddNewTile]
+  );
+
+  useEffect(
+    function addTileAfterAllTilesMovements() {
+      numberOfTilesThatWillMove &&
+        numberOfTilesMoved === numberOfTilesThatWillMove &&
+        setStoreMe({
+          shouldAddNewTile: true,
+          numberOfTilesThatWillMove: 0,
+          numberOfTilesMoved: 0,
+          areControlsLocked: false,
+        });
+    },
+    [numberOfTilesThatWillMove, numberOfTilesMoved]
   );
 };
 

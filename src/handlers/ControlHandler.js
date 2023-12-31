@@ -1,12 +1,14 @@
-import { setStoreMe } from 'store-me';
+import { setStoreMe, useStoreMe } from 'store-me';
 
+import getTilesFromGroupAxis from '../utils/getTilesFromGroupAxis';
 import useEventListener from '../hooks/useEventListener';
+import CONFIG from '../_constants/config';
 
-const size = 4;
-
-const reverseAxisMap = {
-  x: 'y',
-  y: 'x',
+const actionsMap = {
+  ArrowLeft: () => handleAction('decrement', 'x'),
+  ArrowRight: () => handleAction('increment', 'x'),
+  ArrowDown: () => handleAction('increment', 'y'),
+  ArrowUp: () => handleAction('decrement', 'y'),
 };
 
 const handleAction = (direction, axis) => {
@@ -19,24 +21,24 @@ const handleAction = (direction, axis) => {
       {}
     );
 
-    let hasMovedATile = false;
+    let numberOfTilesThatWillMove = 0;
 
-    for (let groupIndex = 0; groupIndex < size; groupIndex++) {
-      const tilesInGroup = getTilesFromGroup(newTiles, groupIndex, axis, direction);
+    for (let groupIndex = 0; groupIndex < CONFIG.gridSize; groupIndex++) {
+      const tilesInGroup = getTilesFromGroupAxis(newTiles, groupIndex, axis, direction);
 
       for (let tileIndex = 0; tileIndex < tilesInGroup.length; tileIndex++) {
         const tileToMove = tilesInGroup[tileIndex];
 
         // TODO: Need to optimize the edge cases
         // if (tileToMove[axis] !== 0) {
-        for (let indexToMove = 1; indexToMove <= size; indexToMove++) {
+        for (let indexToMove = 1; indexToMove <= CONFIG.gridSize; indexToMove++) {
           if (direction === 'decrement') {
             tileToMove[axis] = tileToMove[axis] - 1;
           } else {
             tileToMove[axis] = tileToMove[axis] + 1;
           }
 
-          const tilesInGroup = getTilesFromGroup(newTiles, groupIndex, axis, direction);
+          const tilesInGroup = getTilesFromGroupAxis(newTiles, groupIndex, axis, direction);
           const tileInNextPosition = tilesInGroup.find(tileInRow => tileInRow[axis] === tileToMove[axis]);
 
           if (tileInNextPosition) {
@@ -56,60 +58,33 @@ const handleAction = (direction, axis) => {
           } else if (tileToMove[axis] < 0) {
             tileToMove[axis] = 0;
             break;
-          } else if (tileToMove[axis] > size - 1) {
-            tileToMove[axis] = size - 1;
+          } else if (tileToMove[axis] > CONFIG.gridSize - 1) {
+            tileToMove[axis] = CONFIG.gridSize - 1;
             break;
           }
         }
 
-        hasMovedATile =
-          hasMovedATile || tileToMove.x !== newTiles[tileToMove.id].x || tileToMove.y !== newTiles[tileToMove.id].y;
+        if (tileToMove.x !== newTiles[tileToMove.id].x || tileToMove.y !== newTiles[tileToMove.id].y) {
+          numberOfTilesThatWillMove++;
+        }
 
         newTiles[tileToMove.id] = tileToMove;
         // }
       }
     }
 
-    return { tiles: Object.values(newTiles), addNewTile: hasMovedATile };
+    return {
+      tiles: Object.values(newTiles),
+      numberOfTilesThatWillMove,
+      areControlsLocked: numberOfTilesThatWillMove > 0,
+    };
   });
 };
 
-const actionsMap = {
-  ArrowLeft: () => handleAction('decrement', 'x'),
-  ArrowRight: () => handleAction('increment', 'x'),
-  ArrowDown: () => handleAction('increment', 'y'),
-  ArrowUp: () => handleAction('decrement', 'y'),
-};
+const ControlHandler = () => {
+  const { areControlsLocked } = useStoreMe('areControlsLocked');
 
-const ControlHandler = () => useEventListener('keydown', ({ code }) => actionsMap[code] && actionsMap[code]());
+  useEventListener('keydown', ({ code }) => !areControlsLocked && actionsMap[code] && actionsMap[code]());
+};
 
 export default ControlHandler;
-
-const getTilesFromGroup = (tiles, rowIndex, axis, direction) => {
-  let result = [];
-  const tilesArray = Object.values(tiles);
-
-  for (let index = 0; index < tilesArray.length; index++) {
-    const tile = tilesArray[index];
-
-    if (tile[reverseAxisMap[axis]] === rowIndex) {
-      result.push({ ...tile });
-    }
-  }
-
-  result = result.sort((tileA, tileB) => tileA[axis] - tileB[axis]);
-
-  direction === 'increment' && result.reverse();
-
-  return result;
-};
-
-/**
- *
- * [
- *    [false, false, false, false]
- *    [2, false, false, false]
- *    [false, false, false, false]
- *    [2, false, false, false]
- * ]
- */

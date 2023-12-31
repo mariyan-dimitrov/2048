@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import Tile from './Tile';
 import { useStoreMe } from 'store-me';
 
-const size = 4;
+import CONFIG from '../../_constants/config';
+import Tile from './Tile';
 
 const Grid = () => {
   const { tiles } = useStoreMe('tiles');
@@ -10,15 +10,13 @@ const Grid = () => {
   return (
     <Wrap>
       <InnerWrap>
-        {[...Array(size)].map((_, x) => {
-          return (
-            <div key={x}>
-              {[...Array(size)].map((_, y) => (
-                <Tile x={x} y={y} key={`${x}-${y}`} />
-              ))}
-            </div>
-          );
-        })}
+        {[...Array(CONFIG.gridSize)].map((_, x) => (
+          <div key={x}>
+            {[...Array(CONFIG.gridSize)].map((_, y) => (
+              <Tile x={x} y={y} key={`${x}-${y}`} />
+            ))}
+          </div>
+        ))}
 
         {tiles.map(tile => {
           const { x, y, value, id, goingToMergeIntoId, idBeingMerged } = tile;
