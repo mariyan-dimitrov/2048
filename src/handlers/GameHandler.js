@@ -2,23 +2,34 @@ import { getStoreMe, setStoreMe, useStoreMe } from 'store-me';
 import { useEffect } from 'react';
 
 import generateRandomTile from '../utils/generateRandomTile';
+import { initialAppState } from '../_constants/stateMap';
 import CONFIG from '../_constants/config';
 
 const Gamehandler = () => {
-  const { numberOfTilesThatWillMove, numberOfTilesMoved, shouldAddNewTile, hasActionEnded, gameOver, tiles } =
-    useStoreMe(
-      'numberOfTilesThatWillMove',
-      'numberOfTilesMoved',
-      'shouldAddNewTile',
-      'hasActionEnded',
-      'gameOver',
-      'tiles'
-    );
+  const {
+    numberOfTilesThatWillMove,
+    numberOfTilesMoved,
+    shouldStartNewGame,
+    shouldAddNewTile,
+    isActionEnabled,
+    startNewGame,
+    gameOver,
+    tiles,
+  } = useStoreMe(
+    'numberOfTilesThatWillMove',
+    'numberOfTilesMoved',
+    'shouldStartNewGame',
+    'shouldAddNewTile',
+    'isActionEnabled',
+    'startNewGame',
+    'gameOver',
+    'tiles'
+  );
 
   useEffect(
-    function startGame() {
+    function addInitialTiles() {
       const generateStartingTiles = () => {
-        if (tiles.length < 2 || shouldAddNewTile) {
+        if (tiles.length < 2 || shouldAddNewTile || startNewGame) {
           const { tiles } = getStoreMe('tiles');
 
           const newTile = generateRandomTile();
@@ -27,14 +38,14 @@ const Gamehandler = () => {
           if (hasTileWithSameCoordinates) {
             generateStartingTiles();
           } else {
-            setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile], shouldAddNewTile: false, hasActionEnded: true }));
+            setStoreMe(({ tiles }) => ({ tiles: [...tiles, newTile], shouldAddNewTile: false, isActionEnabled: true }));
           }
         }
       };
 
       generateStartingTiles();
     },
-    [tiles.length, shouldAddNewTile]
+    [tiles.length, startNewGame, shouldAddNewTile]
   );
 
   useEffect(
@@ -52,7 +63,7 @@ const Gamehandler = () => {
 
   useEffect(
     function detectEndOfGame() {
-      if (tiles.length === CONFIG.gridSize ** 2 && hasActionEnded) {
+      if (tiles.length === CONFIG.gridSize ** 2 && isActionEnabled) {
         const allTilesObject = {};
         let doesHaveActionsLeft = false;
 
@@ -92,14 +103,27 @@ const Gamehandler = () => {
         setStoreMe({ gameOver: !doesHaveActionsLeft });
       }
     },
-    [tiles, hasActionEnded]
+    [tiles, isActionEnabled]
   );
 
-  useEffect(() => {
-    if (gameOver) {
-      window.alert('Game ended');
-    }
-  }, [gameOver]);
+  useEffect(
+    function handleGameOver() {
+      gameOver && setStoreMe(({ score, highScore }) => ({ highScore: Math.max(score, highScore) }));
+    },
+    [gameOver]
+  );
+
+  useEffect(
+    function handleNewGameStart() {
+      if (shouldStartNewGame) {
+        setStoreMe(prevState => ({
+          ...initialAppState,
+          highScore: prevState.highScore,
+        }));
+      }
+    },
+    [shouldStartNewGame]
+  );
 };
 
 export default Gamehandler;

@@ -1,9 +1,13 @@
 import { useRoutes } from 'react-router-dom';
 import { routerRoutes } from './_constants/routesMap';
 import { StyleSheetManager } from 'styled-components';
-import getStylisPlugins from './utils/getStylisPlugins';
-import ErrorBoundary from './components/general/ErrorBoundary';
+
 import ThemeContextProvider from './components/contexts/ThemeContext';
+import LocalStorageSetter from './handlers/LocalStorageSetter';
+import ErrorBoundary from './components/general/ErrorBoundary';
+import ControlHandler from './handlers/ControlHandler';
+import getStylisPlugins from './utils/getStylisPlugins';
+import GameHandler from './handlers/GameHandler';
 import GlobalCSS from './css/GlobalCSS';
 
 const App = () => {
@@ -13,7 +17,13 @@ const App = () => {
     <ThemeContextProvider>
       <StyleSheetManager stylisPlugins={getStylisPlugins()}>
         <GlobalCSS />
-        <ErrorBoundary placeContext="App">{route}</ErrorBoundary>
+        <ErrorBoundary placeContext="App">
+          <ControlHandler />
+          <GameHandler />
+          <LocalStorageSetter />
+
+          {route}
+        </ErrorBoundary>
       </StyleSheetManager>
     </ThemeContextProvider>
   );

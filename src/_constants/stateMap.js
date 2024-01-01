@@ -1,17 +1,21 @@
 import local_storage from '../utils/local_storage';
 
-export const persistenceKeys = new Set([]);
+export const persistenceKeys = new Set(['highScore', 'score', 'tiles']);
 
 export const syncKeys = new Set([]);
 
-const appState = {
+export const initialAppState = {
   themeMode: 'light',
   tiles: [],
   gameOver: false,
   shouldAddNewTile: false,
-  hasActionEnded: true,
+  isActionEnabled: true,
+  shouldStartNewGame: false,
   numberOfTilesThatWillMove: 0,
   numberOfTilesMoved: 0,
+  score: 0,
+  highScore: 0,
+  lastAction: false,
 };
 
 const functions = {
@@ -20,7 +24,7 @@ const functions = {
 
 export const generateInitialState = () => {
   const stateMap = {
-    ...appState,
+    ...initialAppState,
     ...functions,
   };
 

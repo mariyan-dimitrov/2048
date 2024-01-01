@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import cn from 'classnames';
 
 const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
+  const [tilesCoordinates, setTilesCoordinates] = useState({ x, y });
   const [pulsate, setPulsate] = useState(false);
   const isInitialRender = useRef(true);
 
@@ -32,6 +33,13 @@ const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
   );
 
   useEffect(
+    function handleFastActions() {
+      setTilesCoordinates({ x, y });
+    },
+    [x, y]
+  );
+
+  useEffect(
     function indicateMerge() {
       if (isInitialRender.current) {
         isInitialRender.current = false;
@@ -44,8 +52,8 @@ const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
 
   return (
     <Wrap
-      x={x}
-      y={y}
+      x={tilesCoordinates.x}
+      y={tilesCoordinates.y}
       onTransitionEnd={e => {
         if (e.target === e.currentTarget) {
           handleTileMovement();
@@ -65,7 +73,7 @@ const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
           'should-pulsate': pulsate,
         })}
       >
-        {value || `${x}-${y}`}
+        {value}
       </InnerWrap>
     </Wrap>
   );

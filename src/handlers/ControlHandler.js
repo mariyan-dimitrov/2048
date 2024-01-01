@@ -12,7 +12,7 @@ const actionsMap = {
 };
 
 const handleAction = (direction, axis) => {
-  setStoreMe(({ tiles }) => {
+  setStoreMe(({ tiles, score }) => {
     const newTiles = tiles.reduce(
       (result, tile) => ({
         ...result,
@@ -22,6 +22,7 @@ const handleAction = (direction, axis) => {
     );
 
     let numberOfTilesThatWillMove = 0;
+    let scoreToBeAdded = 0;
 
     for (let groupIndex = 0; groupIndex < CONFIG.gridSize; groupIndex++) {
       const tilesInGroup = getTilesFromGroupAxis(newTiles, groupIndex, axis, direction);
@@ -45,6 +46,8 @@ const handleAction = (direction, axis) => {
             if (tileInNextPosition.value === tileToMove.value && !tileInNextPosition.idBeingMerged) {
               newTiles[tileInNextPosition.id].idBeingMerged = tileToMove.id;
               tileToMove.goingToMergeIntoId = tileInNextPosition.id;
+              scoreToBeAdded = scoreToBeAdded + tileToMove.value * 2;
+
               break;
             }
 
@@ -74,17 +77,18 @@ const handleAction = (direction, axis) => {
     }
 
     return {
+      score: score + scoreToBeAdded,
       tiles: Object.values(newTiles),
       numberOfTilesThatWillMove,
-      hasActionEnded: numberOfTilesThatWillMove === 0,
+      isActionEnabled: numberOfTilesThatWillMove === 0,
     };
   });
 };
 
 const ControlHandler = () => {
-  const { hasActionEnded } = useStoreMe('hasActionEnded');
+  const { isActionEnabled, gameOver } = useStoreMe('isActionEnabled', 'gameOver');
 
-  useEventListener('keydown', ({ code }) => hasActionEnded && actionsMap[code] && actionsMap[code]());
+  useEventListener('keydown', ({ code }) => !gameOver && isActionEnabled && actionsMap[code] && actionsMap[code]());
 };
 
 export default ControlHandler;
