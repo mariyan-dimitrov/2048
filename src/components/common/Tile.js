@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { setStoreMe } from 'store-me';
 import styled from 'styled-components';
 import cn from 'classnames';
+import generalStyles from '../../_constants/generalStyles';
 
 const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
   const [tilesCoordinates, setTilesCoordinates] = useState({ x, y });
@@ -11,19 +12,25 @@ const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
 
   const handleMerge = useCallback(
     () =>
-      setStoreMe(({ tiles, numberOfTilesMerged }) => {
+      setStoreMe(({ tiles, numberOfTilesMerged, highestTileValue }) => {
         const newTiles = tiles.map(tile => ({ ...tile })).filter(tile => tile.id !== id);
+        let highestTileValueCopy = highestTileValue;
 
         for (let index = 0; index < newTiles.length; index++) {
           const tile = newTiles[index];
 
           if (tile.id === goingToMergeIntoId) {
             tile.value = tile.value * 2;
+            highestTileValueCopy = Math.max(highestTileValue, tile.value);
             tile.idBeingMerged = false;
           }
         }
 
-        return { tiles: newTiles, numberOfTilesMerged: numberOfTilesMerged + 1 };
+        return {
+          tiles: newTiles,
+          numberOfTilesMerged: numberOfTilesMerged + 1,
+          highestTileValue: highestTileValueCopy,
+        };
       }),
     [goingToMergeIntoId, id]
   );
@@ -91,8 +98,8 @@ export default Tile;
 const Wrap = styled.div`
   width: 84px;
   height: 84px;
-  border-radius: 4px;
-  padding: 8px;
+  border-radius: ${generalStyles.border_radius};
+  padding: ${generalStyles.spacing_8};
   background-color: ${({ theme }) => theme.grid_background};
 
   &.is-dynamic {
@@ -116,13 +123,13 @@ const InnerWrap = styled.div`
   background: ${({ theme }) => theme.box_background};
   width: 100%;
   height: 100%;
-  border-radius: 4px;
+  border-radius: ${generalStyles.border_radius};
 
   &.is-dynamic {
     font-size: 32px;
     font-weight: 900;
-    color: ${({ value, theme }) => theme[`box_color_${value}`]};
-    background: ${({ value, theme }) => theme[`box_bg_${value}`]};
+    color: ${({ value, theme }) => theme[`tile_color_${value}`]};
+    background: ${({ value, theme }) => theme[`tile_bg_${value}`]};
   }
 
   &.is-initial-load {

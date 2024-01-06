@@ -27,12 +27,12 @@ const GameHandler = () => {
   );
 
   useEffect(
-    function addInitialTiles() {
+    function addNewTiles() {
       const generateStartingTiles = () => {
         if (tiles.length < 2 || shouldAddNewTile || startNewGame) {
-          const { tiles } = getStoreMe('tiles');
+          const { highestTileValue, tiles } = getStoreMe('highestTileValue', 'tiles');
 
-          const newTile = generateRandomTile();
+          const newTile = generateRandomTile(highestTileValue);
           const hasTileWithSameCoordinates = tiles.find(tile => tile.x === newTile.x && tile.y === newTile.y);
 
           if (hasTileWithSameCoordinates) {

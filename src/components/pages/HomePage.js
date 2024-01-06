@@ -1,6 +1,7 @@
 import { setStoreMe, useStoreMe } from 'store-me';
 import styled from 'styled-components';
 
+import generalStyles from '../../_constants/generalStyles';
 import ScoreDisplay from '../common/ScoreDisplay';
 import Button from '../common/Button';
 import Grid from '../common/Grid';
@@ -54,10 +55,10 @@ const ScoresWrap = styled.div`
   justify-content: space-between;
   width: 100%;
   max-width: 350px;
-  margin-bottom: 16px;
+  margin-bottom: ${generalStyles.spacing_16};
 `;
 
 const SmallButton = styled(Button)`
-  padding: 8px;
-  margin-bottom: 8px;
+  padding: ${generalStyles.spacing_8};
+  margin-bottom: ${generalStyles.spacing_8};
 `;

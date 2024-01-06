@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import generalStyles from '../../_constants/generalStyles';
 
 const Button = ({ text, onClick, className }) => (
   <Wrap className={className} onClick={onClick}>
@@ -10,16 +11,16 @@ export default Button;
 
 const Wrap = styled.button`
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: ${generalStyles.spacing_8} ${generalStyles.spacing_16};
+  border-radius: ${generalStyles.border_radius};
   font-size: 16px;
-  background-color: #ffb756;
+  background-color: ${({ theme }) => theme.btn_button};
   transition: background-color 0.3s ease;
-  color: #fff;
-  margin-top: 8px;
+  color: ${({ theme }) => theme.text_color};
+  margin-top: ${generalStyles.spacing_8};
   cursor: pointer;
 
   &:hover {
-    background-color: #f59b21;
+    background-color: ${({ btn_hover_button }) => btn_hover_button};
   }
 `;

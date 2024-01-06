@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
+import generalStyles from '../../_constants/generalStyles';
 import usePrevious from '../../hooks/usePrevious';
 
 const ScoreDisplay = ({ title, score }) => {
@@ -49,16 +50,16 @@ export default ScoreDisplay;
 const Wrap = styled.div`
   position: relative;
   display: flex;
-  border-radius: 4px;
-  background-color: #ffb756;
-  color: #fff;
-  padding: 8px 16px;
+  border-radius: ${generalStyles.border_radius};
+  background-color: ${({ theme }) => theme.btn_button};
+  color: ${({ theme }) => theme.text_color};
+  padding: ${generalStyles.spacing_8} ${generalStyles.spacing_16};
   user-select: none;
 `;
 
 const Title = styled.div`
   font-size: 16px;
-  margin-right: 4px;
+  margin-right: ${generalStyles.spacing_4};
 `;
 
 const Score = styled.div`
@@ -70,7 +71,7 @@ const ScoreToAddWrap = styled.div`
   font-weight: 900;
   right: 0;
   top: 0;
-  color: #000;
+  color: ${({ text_secondary_color }) => text_secondary_color};
   transform: translate(0, -200%);
   animation: fade-down 0.4s ease-out forwards;
 

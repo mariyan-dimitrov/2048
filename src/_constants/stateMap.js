@@ -1,12 +1,13 @@
 import local_storage from '../utils/local_storage';
 
-export const persistenceKeys = new Set(['highScore', 'score', 'tiles']);
+export const persistenceKeys = new Set(['highScore', 'highestTileValue', 'score', 'tiles']);
 
 export const syncKeys = new Set([]);
 
 export const initialAppState = {
   themeMode: 'light',
   tiles: [],
+  highestTileValue: 2,
   gameOver: false,
   shouldAddNewTile: false,
   isActionEnabled: true,

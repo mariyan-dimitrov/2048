@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { setStoreMe, useStoreMe } from 'store-me';
+import { useStoreMe } from 'store-me';
 
+import generalStyles from '../../_constants/generalStyles';
 import CONFIG from '../../_constants/config';
-import Button from './Button';
 import Tile from './Tile';
 
 const Grid = () => {
@@ -39,8 +39,6 @@ const Grid = () => {
       {gameOver && (
         <GameOverOverlay>
           <h2>Game over</h2>
-
-          <Button text="Start new game" onClick={() => setStoreMe({ shouldStartNewGame: true })} />
         </GameOverOverlay>
       )}
     </Wrap>
@@ -50,23 +48,23 @@ const Grid = () => {
 export default Grid;
 
 const Wrap = styled.div`
-  background-color: ${({ theme }) => theme.grid_background};
-  border-radius: 4px;
   position: relative;
+  background-color: ${({ theme }) => theme.grid_background};
+  border-radius: ${generalStyles.border_radius};
   overflow: hidden;
 `;
 
 const InnerWrap = styled.div`
-  display: flex;
   position: relative;
-  margin: 8px;
+  display: flex;
+  margin: ${generalStyles.spacing_8};
 `;
 
 const GameOverOverlay = styled.div`
   position: absolute;
   inset: 0;
   backdrop-filter: blur(3px);
-  background-color: #ffffffba;
+  background-color: ${({ game_over_background }) => game_over_background};
   display: flex;
   flex-direction: column;
   align-items: center;
