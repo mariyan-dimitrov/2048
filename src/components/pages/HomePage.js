@@ -13,7 +13,7 @@ const HomePage = () => {
       <InnerWrap>
         <GameWrap>
           <ScoresWrap>
-            <ScoreDisplay title="Best:" score={highScore} />
+            <ScoreDisplay title="Best:" score={Math.max(highScore, score)} />
             <ScoreDisplay title="Score:" score={score} />
           </ScoresWrap>
 

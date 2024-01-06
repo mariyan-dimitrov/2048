@@ -5,7 +5,7 @@ import generateRandomTile from '../utils/generateRandomTile';
 import { initialAppState } from '../_constants/stateMap';
 import CONFIG from '../_constants/config';
 
-const Gamehandler = () => {
+const GameHandler = () => {
   const {
     numberOfTilesThatWillMove,
     numberOfTilesMoved,
@@ -118,7 +118,7 @@ const Gamehandler = () => {
       if (shouldStartNewGame) {
         setStoreMe(prevState => ({
           ...initialAppState,
-          highScore: prevState.highScore,
+          highScore: Math.max(prevState.highScore, prevState.score),
         }));
       }
     },
@@ -126,4 +126,4 @@ const Gamehandler = () => {
   );
 };
 
-export default Gamehandler;
+export default GameHandler;

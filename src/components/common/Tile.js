@@ -5,6 +5,7 @@ import cn from 'classnames';
 
 const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
   const [tilesCoordinates, setTilesCoordinates] = useState({ x, y });
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [pulsate, setPulsate] = useState(false);
   const isInitialRender = useRef(true);
 
@@ -66,11 +67,17 @@ const Tile = ({ x, y, value, goingToMergeIntoId, id, idBeingMerged }) => {
       })}
     >
       <InnerWrap
-        onAnimationEnd={e => e.target === e.currentTarget && e.animationName === 'pulsate' && setPulsate(false)}
+        onAnimationEnd={e => {
+          if (e.target === e.currentTarget && e.animationName === 'pulsate') {
+            isInitialLoad && setIsInitialLoad(false);
+            setPulsate(false);
+          }
+        }}
         value={value}
         className={cn({
           'is-dynamic': value,
           'should-pulsate': pulsate,
+          'is-initial-load': isInitialLoad,
         })}
       >
         {value}
@@ -116,6 +123,9 @@ const InnerWrap = styled.div`
     font-weight: 900;
     color: ${({ value, theme }) => theme[`box_color_${value}`]};
     background: ${({ value, theme }) => theme[`box_bg_${value}`]};
+  }
+
+  &.is-initial-load {
     animation: pulsate 0.1s ease-out;
   }
 
